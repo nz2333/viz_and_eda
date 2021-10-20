@@ -248,3 +248,91 @@ ggplot(data = waikiki, aes(x= date, y = tmax, color = name)) +
     ## Warning: Removed 3 rows containing missing values (geom_point).
 
 ![](viz_part2_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
+
+## patchwork
+
+``` r
+weather_df %>%
+  ggplot(aes(x = tmin, fill  = name)) +
+  geom_density(alpha = 0.5) +
+  facet_grid(.~name)
+```
+
+    ## Warning: Removed 15 rows containing non-finite values (stat_density).
+
+![](viz_part2_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
+
+what happens when you want multipanel plots but can’t facet?
+
+``` r
+tmax_tmin_p = 
+weather_df %>%
+  ggplot(aes(x= tmin, y = tmax, color = name)) +
+  geom_point(alpha = 0.5) +
+  theme(legend.position = "none")
+
+prcp_dens_p = 
+  weather_df %>%
+  filter(prcp >0) %>%
+  ggplot(aes(x = prcp, fill = name)) +
+  geom_density(alpha = 0.5)+
+  theme(legend.position = "none")
+
+tmax_date_p = 
+  weather_df %>%
+  ggplot(aes(x = date, y = tmax, color = name)) +
+  geom_point() +
+  geom_smooth(se= FALSE) +
+  theme(legend.position = "name")
+
+(tmax_tmin_p + prcp_dens_p) / tmax_date_p
+```
+
+    ## Warning: Removed 15 rows containing missing values (geom_point).
+
+    ## `geom_smooth()` using method = 'loess' and formula 'y ~ x'
+
+    ## Warning: Removed 3 rows containing non-finite values (stat_smooth).
+
+    ## Warning: Removed 3 rows containing missing values (geom_point).
+
+![](viz_part2_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
+
+## data manipulation
+
+Control your fatcors:
+
+``` r
+weather_df %>%
+  mutate(
+    name = factor(name), 
+    name = forcats::fct_relevel(name, c("Waikiki_HA"))
+  ) %>%
+  ggplot(aes(x = name, y= tmax, fill = name)) +
+  geom_violin(alpha = 0.5)
+```
+
+    ## Warning: Removed 3 rows containing non-finite values (stat_ydensity).
+
+![](viz_part2_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
+
+What if want density for tmin and tmax simultanueously? On a single
+panel, have both tmin and tmax:
+
+``` r
+weather_df %>%
+  pivot_longer(
+    tmax:tmin, 
+    names_to = "observation", 
+    values_to = "temperatures"
+  ) %>%
+  ggplot(aes(x = temperatures, fill = observation)) +
+  geom_density(alpha = 0.5) +
+  facet_grid(. ~ name)
+```
+
+    ## Warning: Removed 18 rows containing non-finite values (stat_density).
+
+![](viz_part2_files/figure-gfm/unnamed-chunk-15-1.png)<!-- --> ^^First
+chaneg the data to the way that could produce the plot you want, and
+then make the plot.
