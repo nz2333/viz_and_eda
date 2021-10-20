@@ -172,3 +172,72 @@ weather_df %>%
 
 ![](viz_part1_files/figure-gfm/unnamed-chunk-9-1.png)<!-- --> ^this
 shows how dense data is
+
+## Univariate plots
+
+``` r
+weather_df %>%
+  ggplot (aes(x = tmax, fill = name)) +
+  geom_histogram() +
+  facet_grid(. ~ name)
+```
+
+    ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+
+    ## Warning: Removed 3 rows containing non-finite values (stat_bin).
+
+![](viz_part1_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
+
+other plots:
+
+``` r
+weather_df  %>%
+  ggplot(aes(x = tmax, fill = name)) +
+  geom_density(alpha = 0.3)
+```
+
+    ## Warning: Removed 3 rows containing non-finite values (stat_density).
+
+![](viz_part1_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
+
+tamx and name, other ways: boxplot:
+
+``` r
+weather_df %>%
+  ggplot(aes(x = name, y = tmax)) +
+  geom_boxplot()
+```
+
+    ## Warning: Removed 3 rows containing non-finite values (stat_boxplot).
+
+![](viz_part1_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
+
+violin plots:
+
+``` r
+weather_df %>%
+  ggplot(aes(x = name, y = tmax)) +
+  geom_violin()
+```
+
+    ## Warning: Removed 3 rows containing non-finite values (stat_ydensity).
+
+![](viz_part1_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
+
+what about ridges:
+
+``` r
+library(ggridges)
+```
+
+``` r
+weather_df %>%
+  ggplot(aes(x = tmax, y = name)) +
+  geom_density_ridges(alpha = 0.8, scale = 0.8)
+```
+
+    ## Picking joint bandwidth of 1.84
+
+    ## Warning: Removed 3 rows containing non-finite values (stat_density_ridges).
+
+![](viz_part1_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->

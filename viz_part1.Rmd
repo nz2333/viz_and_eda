@@ -103,3 +103,47 @@ weather_df %>%
 ^this shows how dense data is 
 
 
+## Univariate plots
+
+```{r}
+weather_df %>%
+  ggplot (aes(x = tmax, fill = name)) +
+  geom_histogram() +
+  facet_grid(. ~ name)
+```
+
+other plots:
+```{r}
+weather_df  %>%
+  ggplot(aes(x = tmax, fill = name)) +
+  geom_density(alpha = 0.3)
+```
+
+tamx and name, other ways:
+boxplot:
+```{r}
+weather_df %>%
+  ggplot(aes(x = name, y = tmax)) +
+  geom_boxplot()
+```
+
+violin plots:
+```{r}
+weather_df %>%
+  ggplot(aes(x = name, y = tmax)) +
+  geom_violin()
+```
+
+what about ridges:
+```{r}
+library(ggridges)
+```
+
+```{r}
+weather_df %>%
+  ggplot(aes(x = tmax, y = name)) +
+  geom_density_ridges(alpha = 0.8, scale = 0.8)
+```
+
+
+
