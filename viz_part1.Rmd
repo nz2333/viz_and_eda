@@ -63,5 +63,43 @@ add color, lines, and other stuff?
 smooth: adding the line
 facet_grid: make it separate. 
 
+## more scatter plot
+
+```{r}
+weather_df %>%
+  ggplot(aes(x = date, y = tmax, size = prcp)) +
+  geom_point(apha = 0.3) +
+  geom_smooth(se = FALSE) +
+  facet_grid(. ~ name)
+```
+
+## use data manipulation as part of this
+
+```{r}
+weather_df %>%
+  filter(name == "CentralPark_NY") %>%
+  mutate(
+    tmax = tmax * (9/5) + 32, 
+    tmin = tmin * (9/5) + 32
+  ) %>%
+  ggplot(aes(x = tmin, y = tmax)) +
+  geom_point()
+```
+
+## stacking geoms
+which geoms do you want?
+
+```{r}
+weather_df %>%
+  ggplot(aes(x = date, y = tmax ,color = name)) +
+  geom_smooth()
+```
+
+```{r}
+weather_df %>%
+  ggplot(aes(x = tmin, y = tmax)) +
+  geom_hex()
+```
+^this shows how dense data is 
 
 

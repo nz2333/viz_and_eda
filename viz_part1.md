@@ -110,3 +110,65 @@ add color, lines, and other stuff?
 ![](viz_part1_files/figure-gfm/unnamed-chunk-5-1.png)<!-- --> ^alpha:
 transparency level. smooth: adding the line facet\_grid: make it
 separate.
+
+## more scatter plot
+
+``` r
+weather_df %>%
+  ggplot(aes(x = date, y = tmax, size = prcp)) +
+  geom_point(apha = 0.3) +
+  geom_smooth(se = FALSE) +
+  facet_grid(. ~ name)
+```
+
+    ## Warning: Ignoring unknown parameters: apha
+
+    ## `geom_smooth()` using method = 'loess' and formula 'y ~ x'
+
+    ## Warning: Removed 3 rows containing non-finite values (stat_smooth).
+
+    ## Warning: Removed 3 rows containing missing values (geom_point).
+
+![](viz_part1_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
+
+## use data manipulation as part of this
+
+``` r
+weather_df %>%
+  filter(name == "CentralPark_NY") %>%
+  mutate(
+    tmax = tmax * (9/5) + 32, 
+    tmin = tmin * (9/5) + 32
+  ) %>%
+  ggplot(aes(x = tmin, y = tmax)) +
+  geom_point()
+```
+
+![](viz_part1_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
+
+## stacking geoms
+
+which geoms do you want?
+
+``` r
+weather_df %>%
+  ggplot(aes(x = date, y = tmax ,color = name)) +
+  geom_smooth()
+```
+
+    ## `geom_smooth()` using method = 'loess' and formula 'y ~ x'
+
+    ## Warning: Removed 3 rows containing non-finite values (stat_smooth).
+
+![](viz_part1_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
+
+``` r
+weather_df %>%
+  ggplot(aes(x = tmin, y = tmax)) +
+  geom_hex()
+```
+
+    ## Warning: Removed 15 rows containing non-finite values (stat_binhex).
+
+![](viz_part1_files/figure-gfm/unnamed-chunk-9-1.png)<!-- --> ^this
+shows how dense data is
